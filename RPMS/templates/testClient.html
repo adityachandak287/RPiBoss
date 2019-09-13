@@ -13,14 +13,27 @@
   </head>
   <body>
     <h1>Hello</h1>
+    <button value="test" id="test">Test</button>
     <script>
       var socket = io("http://192.168.43.66:8080/");
-      socket.on("connect", function() {
-        socket.emit("newConnection", { data: "I'm connected!" });
-        socket.on("gotData", data => {
-          console.log(data);
-          // document.querySelector("h1").textContent = data.msg;
+
+      document.getElementById("test").addEventListener("click", () => {
+        socket.emit("rpmsDevices", {
+          devices: [
+            {
+              ip: 69,
+              timestamp: 69,
+              status: 69
+            }
+          ]
         });
+      });
+
+      socket.on("connect", function() {
+        socket.emit("getDevices", { data: "I'm connected!" });
+        socket.emit("getLogs", { data: "I'm connected!" });
+        socket.on("updateDevices", devices => console.log(devices));
+        socket.on("updateLogs", logs => console.log(logs));
       });
     </script>
   </body>
