@@ -43,8 +43,23 @@ def sendLogs(message):
     emit('updateLogs', logs)
 
 
+@socketio.on('reading')
+def readingFromClient(reading):
+    emit('newReading', reading)
+
+
+@socketio.on('execCmd')
+def execCommand(cmd):
+    emit('rpmsCmd', cmd, broadcast=True)
+
+
+@socketio.on('cmdOutput')
+def commandOutputp(cmdOp):
+    emit('rpmsOutput', cmdOp, broadcast=True)
+
+
 def startSocketServer():
-    socketio.run(app, host='192.168.43.66', port=8080, debug=True)
+    socketio.run(app, host='localhost', port=8080, debug=True)
 
 
 if __name__ == '__main__':

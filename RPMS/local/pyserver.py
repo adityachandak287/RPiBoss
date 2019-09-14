@@ -21,7 +21,7 @@ client_certs = 'certchainf.crt'
 
 hostname = socket.gethostname()
 hostinfo = socket.gethostbyname_ex(hostname)
-hostipv4 = '172.16.209.89'
+hostipv4 = '192.168.43.66'
 port = 8989
 
 '''
@@ -106,14 +106,14 @@ def CreateSocket():
                         faults.remove(addr[0])
                         logs.append({
                             "ip": str(addr[0]),
-                            "timestamp": datetime.timestamp(datetime.now())
+                            "timestamp": datetime.timestamp(datetime.now()),
                             "message": "Reconnected To : "+str(addr[0])
                         })
                         print("[ OK ] Reconnected To : "+str(addr[0]))
                     else:
                         logs.append({
                             "ip": str(addr[0]),
-                            "timestamp": datetime.timestamp(datetime.now())
+                            "timestamp": datetime.timestamp(datetime.now()),
                             "message": "News Connection Accepted from "+str(addr[0])
                         })
                         print("[ OK ] News Connection Accepted from "+str(addr[0]))
