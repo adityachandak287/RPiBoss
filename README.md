@@ -31,7 +31,3 @@ Trigger `rpmsLogs` broadcasts `updateLogs`.
 Trigger `reading` emits `newReading` with new reading data from client.
 
 Trigger `execCmd` emits `rpmsCmd` which triggers RPMS to execute command on client.
-
-```
-
-```
