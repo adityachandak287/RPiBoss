@@ -34,4 +34,39 @@ def generateLogs():
             })
     return {"logs": logs}
 
+
+def generateReading():
+    reading = {}
+    month = random.choice(
+        "jan feb mar apr may jun jul aug sep oct nov dec".split(" "))
+    day = random.choice(
+        "mon tue wed thu fri sat sun".split(" "))
+    FFMC = random.random()*random.randint(1, 100)
+    DMC = random.random()*random.randint(1, 100)
+    DC = random.random()*random.randint(1, 100)
+    ISI = random.random()*random.randint(1, 100)
+    temp = random.random()*random.randint(1, 50)
+    RH = random.randint(1, 100)
+    wind = random.random()*random.randint(1, 50)
+    rain = random.random()
+    prediction = random.random()*random.randint(1, 100)
+    confidence = random.random()*100
+
+    return {
+        "data": {
+            "month": month,
+            "day": day,
+            "FFMC": FFMC,
+            "DC": DC,
+            "ISI": ISI,
+            "temp": temp,
+            "RH": RH,
+            "wind": wind,
+            "prediction": prediction,
+            "confidence": confidence,
+            "timestamp": datetime.timestamp(datetime.now())
+        }
+    }
+
+
 # print(getData())

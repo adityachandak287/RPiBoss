@@ -20,7 +20,7 @@ Trigger `getDevices` emits `updateDevices` with device list.
 
 Trigger `getLogs` emits `updateLogs` with logs list.
 
-Trigger `cmdOutput` emits `rpmsOutput` with output of executed command.
+Trigger `rpmsOutput` emits `cmdOutput` with output of executed command.
 
 #### Trigger event on server
 

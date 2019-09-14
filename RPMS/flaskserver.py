@@ -2,7 +2,7 @@ from flask import Flask, render_template
 from flask_socketio import SocketIO, send, emit
 import random
 from time import sleep, localtime, strftime
-from generateData import generateDevices, generateLogs
+from generateData import generateDevices, generateLogs, generateReading
 from flask_cors import CORS, cross_origin
 import threading
 
@@ -45,7 +45,9 @@ def sendLogs(message):
 
 @socketio.on('reading')
 def readingFromClient(reading):
-    emit('newReading', reading)
+    tempReading = generateReading()
+    print(tempReading)
+    emit('newReading', tempReading, broadcast=True)
 
 
 @socketio.on('execCmd')
@@ -53,9 +55,9 @@ def execCommand(cmd):
     emit('rpmsCmd', cmd, broadcast=True)
 
 
-@socketio.on('cmdOutput')
+@socketio.on('rpmsOutput')
 def commandOutputp(cmdOp):
-    emit('rpmsOutput', cmdOp, broadcast=True)
+    emit('cmdOutput', cmdOp, broadcast=True)
 
 
 def startSocketServer():
