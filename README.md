@@ -12,13 +12,13 @@ This project was a part of our IBM Make-A-Thon competition.
 
 ### Installation
 
-```cmd
+```python
 pip install -r RPMS/requirements.txt
 ```
 
 ### Run Flask Server
 
-```cmd
+```python
 python flaskserver.py
 ```
 
@@ -46,13 +46,18 @@ Trigger `execCmd` emits `rpmsCmd` which triggers RPMS to execute command on clie
 
 ### Installation
 
-```
+```javascript
 cd PORTAL/
 npm install
 ```
 
 ### Running
 
-```
+```javascript
 npm run start
 ```
+
+### Contributors
+- [Aditya Mahesh Chandak](https://github.com/adityachandak287)
+- [Allandhir Megharaj](https://github.com/allandhir)
+- [Yash Mehrotra](https://github.com/YashMeh)
