@@ -3,6 +3,10 @@ import random
 from datetime import datetime
 
 
+def getTimeStamp():
+    return strftime("%H:%M:%S", localtime())
+
+
 def generateDevices():
     devices = []
     for i in range(10):
@@ -12,7 +16,7 @@ def generateDevices():
 
         devices.append({
             "ip": ip,
-            "timestamp": datetime.timestamp(datetime.now()),
+            "timestamp": getTimeStamp(),
             "status": status
         })
     return {"devices": devices}
@@ -28,7 +32,7 @@ def generateLogs():
         if random.randint(1, 10) < 4:
             logs.append({
                 "ip": ip,
-                "timestamp": datetime.timestamp(datetime.now()),
+                "timestamp": getTimeStamp(),
                 "message": "Status change " + str(random.randint(10, 99))
 
             })
@@ -57,14 +61,16 @@ def generateReading():
             "month": month,
             "day": day,
             "FFMC": FFMC,
+            "DMC": DMC,
             "DC": DC,
             "ISI": ISI,
             "temp": temp,
             "RH": RH,
             "wind": wind,
+            "rain": rain,
             "prediction": prediction,
             "confidence": confidence,
-            "timestamp": datetime.timestamp(datetime.now())
+            "timestamp": getTimeStamp()
         }
     }
 

@@ -44,10 +44,10 @@ def sendLogs(message):
 
 
 @socketio.on('reading')
-def readingFromClient(reading):
-    tempReading = generateReading()
-    print(tempReading)
-    emit('newReading', tempReading, broadcast=True)
+def readingFromClient(readingData):
+    # tempReading = generateReading()
+    # print(tempReading)
+    emit('newReading', readingData, broadcast=True)
 
 
 @socketio.on('execCmd')
@@ -61,10 +61,10 @@ def commandOutputp(cmdOp):
 
 
 def startSocketServer():
-    socketio.run(app, host='localhost', port=8080, debug=True)
+    socketio.run(app, host='192.168.43.32', port=8080, debug=True)
 
 
 if __name__ == '__main__':
-    devices = generateDevices()
-    logs = generateLogs()
     startSocketServer()
+    socketio.emit('updateDevices', [], broadcast=True)
+    socketio.emit('updateLogs', [], broadcast=True)

@@ -8,8 +8,9 @@ import subprocess
 import shlex
 from datetime import datetime
 import socketio
+import json
 
-flaskServer = 'http://localhost:8080'
+flaskServer = 'http://192.168.43.32:8080'
 # Socket.io client
 sio = socketio.Client()
 
@@ -17,7 +18,7 @@ sio = socketio.Client()
 # path to PEM files
 server_cert = 'servercertchainf.crt'
 #server_key = 'server.key'
-client_certs = 'certchainf.crt'
+client_certs = 'adityacertchainf.crt'
 
 hostname = socket.gethostname()
 hostinfo = socket.gethostbyname_ex(hostname)
@@ -61,6 +62,18 @@ def disconnect():
     print("Disconnected from Flask Server!")
 
 
+@sio.on('rpmsCmd')
+def executeRemoteCommand(cmdData):
+    clientIp = cmdData["ip"]
+    cmdString = cmdData["cmd"]
+    ipIndex = all_client_ip.index(clientIp)
+    all_client_newsockfd[ipIndex].send(str.encode(cmdString))
+
+
+def getTimeStamp():
+    return time.strftime("%H:%M:%S", time.localtime())
+
+
 def sendDevices():
     deviceData = []
     for key, value in all_clients.items():
@@ -69,11 +82,21 @@ def sendDevices():
             "timestamp": value["timestamp"],
             "status": value["status"]
         })
-    sio.emit("rpmsDevices", deviceData)
+    sio.emit("rpmsDevices", {"devices": deviceData})
+
+
+def sendReading(reading):
+    # print("SENDING READING*************")
+    # print(reading)
+    sio.emit("reading", reading)
 
 
 def sendLogs():
-    sio.emit("rpmsLogs", logs)
+    sio.emit("rpmsLogs", {"logs": logs})
+
+
+def sendStdOut(cmdOut):
+    sio.emit("rpmsOutput", cmdOut)
 
 
 def CreateSocket():
@@ -98,23 +121,23 @@ def CreateSocket():
                     conn, addr = s.accept()
                     conn = context.wrap_socket(conn, server_side=True)
                     all_clients[addr[0]] = {
-                        "timestamp": datetime.timestamp(datetime.now()),
-                        "status": "active"
+                        "timestamp": getTimeStamp(),
+                        "status": "connected"
                     }
                     sendDevices()
                     if addr[0] in faults:
                         faults.remove(addr[0])
                         logs.append({
                             "ip": str(addr[0]),
-                            "timestamp": datetime.timestamp(datetime.now()),
-                            "message": "Reconnected To : "+str(addr[0])
+                            "timestamp": getTimeStamp(),
+                            "message": "Reconnected"
                         })
                         print("[ OK ] Reconnected To : "+str(addr[0]))
                     else:
                         logs.append({
                             "ip": str(addr[0]),
-                            "timestamp": datetime.timestamp(datetime.now()),
-                            "message": "News Connection Accepted from "+str(addr[0])
+                            "timestamp": getTimeStamp(),
+                            "message": "Connection established"
                         })
                         print("[ OK ] News Connection Accepted from "+str(addr[0]))
                     sendLogs()
@@ -145,10 +168,16 @@ def ifActive():
                 except:
                     faults.append(all_client_ip[j])
                     all_clients[all_client_ip[j]] = {
-                        "timestamp": datetime.timestamp(datetime.now()),
+                        "timestamp": getTimeStamp(),
                         "status": "disconnected"
                     }
                     sendDevices()
+                    logs.append({
+                        "ip": str(all_client_ip[j]),
+                        "timestamp": getTimeStamp(),
+                        "message": "Client disconnected"
+                    })
+                    sendLogs()
 
                     print("[ FAILED ] Connection Lost to : " +
                           str(all_client_ip[j]))
@@ -203,12 +232,9 @@ def MyCmds():
                 else:
                     print("Conn No. Not In Range")
         if(cmds == "quit"):
-            quitcmd = shlex.split(
-                "PID=`ps ax | grep ./pyserver| awk '{print $1}'`")
-            out = subprocess.Popen(
-                quitcmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            stdout, stderr = out.communicate()
-            print(stdout)
+            # quitcmd = shlex.split()
+            s.shutdown()
+            s.close()
 
 
 def RecvData():
@@ -216,11 +242,19 @@ def RecvData():
         if(len(all_client_newsockfd) > 0):
             for rj, rc in enumerate(all_client_newsockfd):
                 try:
-                    ServerData = rc.recv(1024)
+                    dataLen = int(rc.recv(4).decode("utf-8"))
+                    ServerData = rc.recv(dataLen)
                     ServerData = ServerData.decode("utf-8")
+                    # print(ServerData)
+                    clientResponse = json.loads(ServerData)
+                    if "data" in clientResponse:
+                        sendReading(ServerData)
+                    if "stdout" in clientResponse:
+                        print(ServerData)
+                        sendStdOut(ServerData)
                     if(len(ServerData) > 0):
-                        print("Data From " +
-                              all_client_ip[rj]+" :   "+ServerData)
+                        # print("Data From " +
+                        #       all_client_ip[rj]+" :   ")  # +ServerData)
                         ServerData = ""
                 except socket.timeout:
                     print("inactive Client : "+all_client_ip[rj])
