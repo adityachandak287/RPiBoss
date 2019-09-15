@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Flask SocketIO Test</title>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
+      integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <h1>Hello</h1>
+    <button value="test" id="test">Test</button>
+    <button value="reading" id="reading">Reading</button>
+    <script>
+      var socket = io("http://localhost:8080/");
+
+      document.getElementById("test").addEventListener("click", () =>
+        socket.emit("rpmsDevices", {
+          devices: [
+            {
+              ip: 69,
+              timestamp: 69,
+              status: 69
+            }
+          ]
+        })
+      );
+
+      document
+        .getElementById("reading")
+        .addEventListener("click", () =>
+          socket.emit("reading", { data: "reading" })
+        );
+
+      socket.on("connect", function() {
+        socket.emit("getDevices", { data: "I'm connected!" });
+        socket.emit("getLogs", { data: "I'm connected!" });
+        socket.on("updateDevices", devices => console.log(devices));
+        socket.on("updateLogs", logs => console.log(logs));
+
+        socket.on("newReading", reading => console.log(reading));
+      });
+    </script>
+  </body>
+</html>
