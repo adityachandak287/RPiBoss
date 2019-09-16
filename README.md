@@ -58,6 +58,6 @@ npm run start
 ```
 
 ### Contributors
-- [Aditya Mahesh Chandak](https://github.com/adityachandak287)
+- [Aditya Chandak](https://github.com/adityachandak287)
 - [Allandhir Megharaj](https://github.com/allandhir)
 - [Yash Mehrotra](https://github.com/YashMeh)
