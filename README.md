@@ -1,18 +1,28 @@
-# Edge Computing using Raspberry Pi Management System
+# Edge Computing using RaspberryPi Management System
 
-## Installation
+![python](https://img.shields.io/badge/python-3.5-blue) ![Node](https://img.shields.io/badge/node-11.8-green)
 
-```cmd
+This project was a part of our IBM Make-A-Thon competition.
+
+## How does it work ?
+
+![dfd](https://raw.githubusercontent.com/adityachandak287/Make-A-Thon/master/Data%20Flow%20Triggers.jpg?token=AH6I55B76AXAB7FLVCVOCOC5Q6BFC)
+
+## RPMS
+
+### Installation
+
+```python
 pip install -r RPMS/requirements.txt
 ```
 
-## Run Flask Server
+### Run Flask Server
 
-```cmd
+```python
 python flaskserver.py
 ```
 
-## Socket.io Triggers
+### Socket.io Triggers
 
 #### Get data from server
 
@@ -31,3 +41,23 @@ Trigger `rpmsLogs` broadcasts `updateLogs`.
 Trigger `reading` emits `newReading` with new reading data from client.
 
 Trigger `execCmd` emits `rpmsCmd` which triggers RPMS to execute command on client.
+
+## PORTAL
+
+### Installation
+
+```javascript
+cd PORTAL/
+npm install
+```
+
+### Running
+
+```javascript
+npm run start
+```
+
+### Contributors
+- [Aditya Chandak](https://github.com/adityachandak287)
+- [Allandhir Megharaj](https://github.com/allandhir)
+- [Yash Mehrotra](https://github.com/YashMeh)
