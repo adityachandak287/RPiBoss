@@ -1,4 +1,4 @@
-# IBM Make-A-Thon
+# Edge Computing using Raspberry Pi Management System
 
 ## Installation
 
