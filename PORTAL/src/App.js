@@ -12,12 +12,14 @@ class App extends Component {
   };
   render() {
     return (
-      <BrowserRouter>
-        <div>
-          <Route path="/admin" exact component={AdminPanel} />
-          <Route path="/ml" exact component={MLPanel} />
-        </div>
-      </BrowserRouter>
+      <div data-test="AppComponent">
+        <BrowserRouter>
+          <div>
+            <Route path="/admin" exact component={AdminPanel} />
+            <Route path="/ml" exact component={MLPanel} />
+          </div>
+        </BrowserRouter>
+      </div>
     );
   }
 }
