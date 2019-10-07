@@ -57,7 +57,14 @@ npm install
 npm run start
 ```
 
+### Running
+
+```javascript
+npm test
+```
+
 ### Contributors
+
 - [Aditya Chandak](https://github.com/adityachandak287)
 - [Allandhir Megharaj](https://github.com/allandhir)
 - [Yash Mehrotra](https://github.com/YashMeh)
