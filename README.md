@@ -57,7 +57,7 @@ npm install
 npm run start
 ```
 
-### Running
+### Testing
 
 ```javascript
 npm test
