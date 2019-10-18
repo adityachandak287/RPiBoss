@@ -44,14 +44,14 @@ class MuiVirtualizedTable extends React.PureComponent {
     rowHeight: 40
   };
   state = {
-    deviceIp: ""
+    devices: []
   };
   getRowClassName = ({ index }) => {
     const { classes, onRowClick } = this.props;
 
     return clsx(classes.tableRow, classes.flexContainer, {
       [classes.tableRowHover]: index !== -1 && onRowClick != null,
-      [classes.selectedRow]: this.state.index === index
+      [classes.selectedRow]: this.state.devices.includes(index)
     });
   };
 
@@ -96,20 +96,19 @@ class MuiVirtualizedTable extends React.PureComponent {
       </TableCell>
     );
   };
-  //Use unique id in place of rowData
-  //   handleClick = ({ index, rowData }) => {
-  //     if (this.state.index === index) {
-  //       this.props.handleOpen("");
-  //       this.setState({ index: -1, projectId: "" });
-  //     } else {
-  //       this.props.handleOpen(rowData._id);
-  //       this.setState({ index, projectId: rowData._id });
-  //     }
-  //   };
-  // handleClick = ({ index, rowData }) => {
-  //   this.props.selectDevice(rowData)
-  // };
-
+  handleRow = ({ index, rowData }) => {
+    console.log(rowData);
+    if (this.state.devices.includes(index)) {
+      const modDevices = this.state.devices.filter(stateIndex => {
+        return index !== stateIndex;
+      });
+      this.setState({ devices: modDevices });
+    } else {
+      const modeDevices = [...this.state.devices, index];
+      this.setState({ devices: modeDevices });
+    }
+    this.props.handleCheck(rowData.ip);
+  };
   render() {
     const { classes, columns, ...tableProps } = this.props;
     return (
@@ -120,7 +119,7 @@ class MuiVirtualizedTable extends React.PureComponent {
             width={width}
             {...tableProps}
             rowClassName={this.getRowClassName}
-            onRowClick={this.handleClick}
+            onRowClick={this.handleRow}
           >
             {columns.map(({ dataKey, ...other }, index) => {
               return (
@@ -162,6 +161,7 @@ class ReactVirtualizedTable extends React.Component {
             handleOpen={this.props.handleOpen}
             rowCount={rows.length}
             rowGetter={({ index }) => rows[index]}
+            handleCheck={this.props.handleCheck}
             columns={[
               {
                 width: 200,
@@ -171,7 +171,7 @@ class ReactVirtualizedTable extends React.Component {
               {
                 width: 200,
                 label: "Created On",
-                dataKey: "timestamp"
+                dataKey: "date"
               },
               {
                 width: 200,

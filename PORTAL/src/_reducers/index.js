@@ -3,7 +3,7 @@ import {
   FETCH_LOG,
   FETCH_DEVICE,
   FETCH_DATA,
-  SELECT_DEVICE,
+  SELECT_DEVICES,
   SEND_COM
 } from "../_actions/types";
 
@@ -11,7 +11,8 @@ const deviceReducer = (
   state = {
     deviceList: [],
     active: 0,
-    inactive: 0
+    inactive: 0,
+    sDeviceList: []
   },
   action
 ) => {
@@ -30,7 +31,15 @@ const deviceReducer = (
             ? []
             : action.payload.filter(device => {
                 return device.status === "disconnected";
-              }).length
+              }).length,
+        sDeviceList: state.sDeviceList
+      };
+    case SELECT_DEVICES:
+      return {
+        deviceList: state.deviceList,
+        active: state.active,
+        inactive: state.inactive,
+        sDeviceList: action.payload
       };
     default:
       return state;
@@ -72,11 +81,11 @@ const dataReducer = (
       return state;
   }
 };
-const deviceSelectReducer = (state = { selectedDevice: {} }, action) => {
+const commandReducer = (state = { testResult: " " }, action) => {
   switch (action.type) {
-    case SELECT_DEVICE:
+    case SEND_COM:
       return {
-        selectedDevice: action.payload
+        testResult: action.payload
       };
     default:
       return state;
@@ -86,5 +95,5 @@ export default combineReducers({
   devices: deviceReducer,
   logs: logReducer,
   data: dataReducer,
-  selectedDevice: deviceSelectReducer
+  result: commandReducer
 });

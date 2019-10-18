@@ -5,7 +5,8 @@ import { connect } from "react-redux";
 import {
   fetchDeviceAction,
   fetchDataAction,
-  fetchLogAction
+  fetchLogAction,
+  selectDevices
 } from "./_actions/index";
 const drawerWidth = 0;
 const styles = theme => ({
@@ -101,13 +102,27 @@ class Devices extends Component {
     //this.props.fetchDataAction("newReading");
     this.props.fetchLogAction("getLogs", "updateLogs");
   };
-
+  handleCheck = ip => {
+    let selectedDevices = [];
+    if (this.props.sDevices.includes(ip)) {
+      selectedDevices = this.props.sDevices.filter(stateIp => {
+        return ip !== stateIp;
+      });
+      this.props.selectDevices(selectedDevices);
+    } else {
+      selectedDevices = [...this.props.sDevices, ip];
+      this.props.selectDevices(selectedDevices);
+    }
+  };
   render() {
     const { classes } = this.props;
     return (
       <Fragment>
         <div className={classes.table}>
-          <DeviceTable devices={this.props.devices} />
+          <DeviceTable
+            devices={this.state.devices}
+            handleCheck={this.handleCheck}
+          />
         </div>
       </Fragment>
     );
@@ -117,10 +132,11 @@ class Devices extends Component {
 const styledComp = withStyles(styles, { withTheme: true })(Devices);
 const MapStateToProp = state => {
   return {
-    devices: state.devices.deviceList
+    devices: state.devices.deviceList,
+    sDevices: state.devices.sDeviceList
   };
 };
 export default connect(
   MapStateToProp,
-  { fetchDeviceAction, fetchDataAction, fetchLogAction }
+  { fetchDeviceAction, fetchDataAction, fetchLogAction, selectDevices }
 )(styledComp);

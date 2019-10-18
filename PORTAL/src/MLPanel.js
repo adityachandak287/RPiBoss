@@ -26,6 +26,27 @@ class AdminPanel extends Component {
               Admin Module
             </Button>
           </Link>
+          <Link to="/ml" style={{ textDecoration: "none" }}>
+            <Button
+              variant="outlined"
+              color="primary"
+              size="large"
+              style={{ margin: 20 }}
+            >
+              ML Module
+            </Button>
+          </Link>
+
+          <Link to="/settings" style={{ textDecoration: "none" }}>
+            <Button
+              variant="outlined"
+              color="primary"
+              size="large"
+              style={{ margin: 20 }}
+            >
+              Settings
+            </Button>
+          </Link>
         </Grid>
         <Grid container spacing={3}>
           <Grid item xs={12}>

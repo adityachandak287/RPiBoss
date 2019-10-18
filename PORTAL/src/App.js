@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { BrowserRouter, Route } from "react-router-dom";
 import AdminPanel from "./AdminPanel";
 import MLPanel from "./MLPanel";
+import DbView from "./DbView";
 import { fetchDeviceAction, fetchLogAction, fetchDataAction } from "./_actions";
 import { connect } from "react-redux";
 class App extends Component {
@@ -17,6 +18,7 @@ class App extends Component {
           <div>
             <Route path="/admin" exact component={AdminPanel} />
             <Route path="/ml" exact component={MLPanel} />
+            <Route path="/settings" exact component={DbView} />
           </div>
         </BrowserRouter>
       </div>
